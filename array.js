@@ -121,3 +121,82 @@ function main(){
 
 //5.
 
+function urlifyString(string){
+  if(string === ''){
+    return '';
+  }
+
+  if(string[0] === ' '){
+    return '%20' + urlifyString(string.slice(1));
+  }
+
+  return string[0] + urlifyString(string.slice(1));
+}
+
+// console.log(urlifyString('tauhida parveen'));
+// console.log(urlifyString('www.thinkful.com /tauh ida parv een'));
+
+//O(n^2), looping through once and at each step of the loop we are shifting the n-1 array up one memory block
+
+//6. 
+
+function filterLessThanFive(array){
+  let filteredArray = [];
+  for(let i = 0; i < array.length; i++){
+    if(array[i] >= 5){
+      filteredArray.push(array[i]);
+    }
+  }
+  return filteredArray;
+}
+
+// console.log(filterLessThanFive([1,2,3,4,5,6,7,8,9,10,10,10,10,10]));
+
+//O(n)
+
+//7.
+
+function largestContinuousSum(array){
+  let beforeIndexSum = 0;
+  let lastCheckedPoint = 0;
+  let greatestContinuousSum = array[0];
+
+  //loop through array  
+  while(lastCheckedPoint <= array.length){
+    let currentContinuousSum=array[lastCheckedPoint];
+    //check if current sum is biggest
+    if(currentContinuousSum > greatestContinuousSum) {
+      greatestContinuousSum = currentContinuousSum;
+    }
+    beforeIndexSum=0;
+
+    //loop through numbers after checkpoint
+    for(let i = lastCheckedPoint+1; i<array.length; i++){
+      
+
+      //if prev numbers + current number is not negative, add it to current sum and reset prev numbers
+      if(beforeIndexSum+array[i] >= 0){
+        
+        currentContinuousSum = currentContinuousSum+beforeIndexSum+array[i];
+        beforeIndexSum=0;
+
+        //check if current sum is biggest
+        if(currentContinuousSum > greatestContinuousSum) {
+          greatestContinuousSum = currentContinuousSum;
+        }
+
+      //else add the current number to prev numbers, 
+      } else {
+        beforeIndexSum = beforeIndexSum + array[i];        
+      }
+    }
+    lastCheckedPoint++;
+  }
+  return greatestContinuousSum;
+}
+
+console.log(largestContinuousSum([4, 6, -3, 5, -2, 1])); //12
+console.log(largestContinuousSum([1])); //1
+console.log(largestContinuousSum([1,-1])); //1
+console.log(largestContinuousSum([-1,1])); //1
+console.log(largestContinuousSum([-2,-3,-1])); //-1
