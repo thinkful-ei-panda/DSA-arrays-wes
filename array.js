@@ -195,8 +195,179 @@ function largestContinuousSum(array){
   return greatestContinuousSum;
 }
 
-console.log(largestContinuousSum([4, 6, -3, 5, -2, 1])); //12
-console.log(largestContinuousSum([1])); //1
-console.log(largestContinuousSum([1,-1])); //1
-console.log(largestContinuousSum([-1,1])); //1
-console.log(largestContinuousSum([-2,-3,-1])); //-1
+// console.log(largestContinuousSum([4, 6, -3, 5, -2, 1])); //12
+// console.log(largestContinuousSum([1])); //1
+// console.log(largestContinuousSum([1,-1])); //1
+// console.log(largestContinuousSum([-1,1])); //1
+// console.log(largestContinuousSum([-2,-3,-1])); //-1
+
+//8. 
+
+function mergeSortedArrays(arrayA,arrayB){
+  let indexA=0;
+  let indexB=0;
+
+  let result = [];
+
+  while(indexA<arrayA.length || indexB<arrayB.length){
+    if(indexA === arrayA.length && indexB < arrayB.length){
+      result = [...result,...arrayB.slice(indexB)];
+      break;
+    }
+
+    if(indexB === arrayB.length && indexA < arrayA.length){
+      result = [...result,...arrayA.slice(indexA)];
+      break;
+    }
+
+    if(arrayA[indexA]<arrayB[indexB]){
+      result.push(arrayA[indexA]);
+      indexA++;
+    } else if(arrayB[indexB]<arrayA[indexA]){
+      result.push(arrayB[indexB]);
+      indexB++;
+    } else {
+      result.push(arrayB[indexB]);
+      result.push(arrayB[indexB]);
+      indexB++;
+      indexA++;      
+    }
+  }
+  return result;
+}
+
+// console.log(mergeSortedArrays([1, 3, 6, 8, 11],[2, 3, 5, 8, 9, 10]));
+// console.log(mergeSortedArrays([1, 1,1,1,1,1],[2,2,2,2,2]));
+// console.log(mergeSortedArrays([5],[1,2,3,4,5]));
+
+//9.
+
+function removeChars(string, chars){
+  let add = true;
+  let result = [];
+  let i=0;
+  let j=0;
+
+  while(i < string.length){
+    while(j < chars.length){
+      if(string[i] === chars[j]){
+        add = false;
+        break;
+      }
+      j++;
+    }
+    if(add === true){
+      result.push(string[i]);
+    } else {
+      add = true;
+    }
+    i++;
+    j=0;
+  }
+  return result.join('');
+}
+
+// console.log(removeChars('Battle of the Vowels: Hawaii vs. Grozny', 'aeiou'));
+
+//10.
+
+function products(array){
+  let totalProduct = 1;
+  let result = [];
+  for(let i = 0; i < array.length; i++){
+    totalProduct = totalProduct * array[i];
+  }
+
+  for(let j = 0; j < array.length; j++){
+    result.push(totalProduct/array[j]);
+  }
+  
+  return result;
+}
+
+// console.log(products([1, 3, 9, 4]));
+
+//11.
+
+function twoDArray(array){
+  let result = [];
+  for(let x = 0; x < array.length; x++){
+    let subArray = [];
+    for(let y = 0; y < array[0].length; y++){
+      subArray.push(5);
+    }
+    result.push(subArray);
+  }
+
+  for(let m = 0; m < array.length; m++) {
+    for(let n = 0; n < array[m].length; n++){
+      let value = array[m][n];
+
+      //is the value a 1?
+      if(value === 1){       
+
+        //check the row and column for zeroes
+        if(areThereZeroes(m,n,array)){
+          result[m][n] = 0;
+          
+        }else {
+          result[m][n] = 1;
+          
+        }
+      } else {
+        result [m][n] = 0;
+
+      }
+    }
+  }
+  return result;
+}
+
+function areThereZeroes(m,n,array){
+  //check column for 0s
+  for(let i = 0; i < array.length; i++){
+    if(array[i][n] === 0) {
+      return true;
+    }
+  }
+
+  //check row for 0s
+  for(let j = 0; j < array[m].length; j++){
+    if(array[m][j] === 0) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// console.log(twoDArray([[1,0,1,1,0],
+//   [0,1,1,1,0],
+//   [1,1,1,1,1],
+//   [1,0,1,1,1],
+//   [1,1,1,1,1]]));
+
+// console.log(twoDArray([[1,0,1,1,0,0],
+//   [0,1,1,1,0,0],
+//   [1,1,1,1,1,0],
+//   [1,0,1,1,1,0],
+//   [1,1,1,1,1,0]]));
+
+//12.
+
+function rotatedString(string1,string2, count=string1.length){
+  if(string1 === string2) {
+    return true;
+  }
+
+  if(count === 0){
+    return false;
+  }
+
+  const movedChar = string1[string1.length-1];
+
+  return rotatedString(movedChar.concat(string1.slice(0,-1)),string2,count-1);
+}
+
+// console.log(rotatedString('amazon', 'azonma')); //false
+// console.log(rotatedString('amazon', 'azonam')); //true
